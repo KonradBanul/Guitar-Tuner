@@ -28,7 +28,7 @@
         app:layout_constraintHorizontal_bias="0.500"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.100"
+        app:layout_constraintVertical_bias="0.300"
         tools:ignore="HardcodedText" />
 
     <Button
@@ -41,7 +41,7 @@
         app:layout_constraintHorizontal_bias="0.500"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.180"
+        app:layout_constraintVertical_bias="0.380"
         tools:ignore="HardcodedText" />
 
     <Button
@@ -53,7 +53,7 @@
         app:layout_constraintHorizontal_bias="0.500"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.260"
+        app:layout_constraintVertical_bias="0.460"
         android:text="DADGAD" tools:ignore="HardcodedText"/>
 
     <Button
@@ -65,7 +65,7 @@
         app:layout_constraintHorizontal_bias="0.500"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.340"
+        app:layout_constraintVertical_bias="0.540"
         android:text="Open E" tools:ignore="HardcodedText"/>
 
     <Button
@@ -77,7 +77,7 @@
         app:layout_constraintHorizontal_bias="0.500"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.420"
+        app:layout_constraintVertical_bias="0.620"
         android:text="Bass Tuning" tools:ignore="HardcodedText"/>
 
     <Button
@@ -89,7 +89,7 @@
         app:layout_constraintHorizontal_bias="0.500"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.500"
+        app:layout_constraintVertical_bias="0.700"
         android:text="Ukulele Tuning" tools:ignore="HardcodedText"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
