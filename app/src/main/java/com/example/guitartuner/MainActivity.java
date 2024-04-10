@@ -1,6 +1,7 @@
 
 package com.example.guitartuner;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -23,9 +24,26 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
     }
+    @SuppressLint("NonConstantResourceId")
     public void onButtonClick(View view) {
-        Intent intent = new Intent(this, EStandardActivity.class);
+        Intent intent;
+        int viewId = view.getId();
+
+        if (viewId == R.id.button1) {
+            intent = new Intent(this, EStandardActivity.class);
+        } else if (viewId == R.id.button2) {
+            intent = new Intent(this, DDropActivity.class);
+        } else if (viewId == R.id.button3) {
+            intent = new Intent(this, DADGADActivity.class);
+        } else if (viewId == R.id.button4) {
+            intent = new Intent(this, OpenEActivity.class);
+        } else if (viewId == R.id.button5) {
+            intent = new Intent(this, BassTuningActivity.class);
+        } else if (viewId == R.id.button6) {
+            intent = new Intent(this, UkuleleTuningActivity.class);
+        } else {
+            return;
+        }
         startActivity(intent);
     }
-
 }

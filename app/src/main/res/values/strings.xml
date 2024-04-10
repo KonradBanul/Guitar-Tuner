@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GuitarTuner</string>
+    <string name="choose_tuning">Choose Tuning</string>
 </resources>
