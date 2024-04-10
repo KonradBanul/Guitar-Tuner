@@ -1,3 +1,4 @@
+
 package com.example.guitartuner;
 
 import android.Manifest;
@@ -36,11 +37,12 @@ import be.tarsos.dsp.pitch.PitchProcessor;
 public class EStandardActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 1;
 
-    private TextView pitchTextView, pitchTextView1;
+    private TextView pitchTextView, pitchTextView1, pitchTextView2;
 
     private AudioRecord audioRecord;
     private TarsosDSPAudioFormat audioFormat;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,7 @@ public class EStandardActivity extends AppCompatActivity {
         });
         pitchTextView = findViewById(R.id.pitchTextView);
         pitchTextView1 = findViewById(R.id.pitchTextView1);
+        pitchTextView2 = findViewById(R.id.pitchTextView2);
 
         RadioGroup tuningRadioGroup = findViewById(R.id.tuningRadioGroup);
         tuningRadioGroup.setOnCheckedChangeListener((group, checkedId) -> handleSelectedTuningOption(checkedId));
@@ -134,24 +137,30 @@ public class EStandardActivity extends AppCompatActivity {
     private void handleRadioButton(int index, float pitchInHz) {
         int[] lowerBounds = {81, 109, 145, 195, 245, 329};
         int[] upperBounds = {83, 111, 147, 197, 247, 331};
-        String[] soundNames = {"E6", "A", "D", "G", "B", "E1"};
 
         if (isInRange(pitchInHz, lowerBounds[index], upperBounds[index])) {
-            runOnUiThread(() -> pitchTextView1.setText("Sound: " + soundNames[index]));
+            runOnUiThread(() -> pitchTextView1.setText("Sound: Correct"));
         } else if (pitchInHz <= lowerBounds[index]) {
             runOnUiThread(() -> pitchTextView1.setText("Sound: Higher"));
         } else {
             runOnUiThread(() -> pitchTextView1.setText("Sound: Lower"));
         }
     }
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
     private void handleSelectedTuningOption(int checkedId) {
+        String[] soundNames = {"E6", "A5", "D4", "G3", "B2", "E1"};
         if (checkedId == R.id.radiobutton1) {
+            pitchTextView2.setText(soundNames[0]);
         } else if (checkedId == R.id.radiobutton2) {
+            pitchTextView2.setText(soundNames[1]);
         } else if (checkedId == R.id.radiobutton3) {
+            pitchTextView2.setText(soundNames[2]);
         } else if (checkedId == R.id.radiobutton4) {
+            pitchTextView2.setText(soundNames[3]);
         } else if (checkedId == R.id.radiobutton5) {
+            pitchTextView2.setText(soundNames[4]);
         } else if (checkedId == R.id.radiobutton6) {
+            pitchTextView2.setText(soundNames[5]);
         }
     }
 
