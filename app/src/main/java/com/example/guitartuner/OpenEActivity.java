@@ -3,7 +3,6 @@ package com.example.guitartuner;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.AudioFormat;
@@ -100,7 +99,7 @@ public class OpenEActivity extends AppCompatActivity {
                 mHandler.postDelayed(this, 50);
             }
         };
-        mHandler.postDelayed(chartUpdater, 100);
+        mHandler.postDelayed(chartUpdater, 50);
 
         if (checkPermissions()) {
             setupAudioRecorder();
@@ -108,8 +107,7 @@ public class OpenEActivity extends AppCompatActivity {
         }
     }
     public void onButtonClick(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        finish();
     }
     private boolean checkPermissions() {
         int recordPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
@@ -251,10 +249,10 @@ public class OpenEActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mHandler.removeCallbacks(chartUpdater);
         if (audioRecord != null) {
             audioRecord.release();
         }
+        mHandler.removeCallbacks(chartUpdater);
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

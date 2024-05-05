@@ -26,24 +26,33 @@ public class MainActivity extends AppCompatActivity {
     }
     @SuppressLint("NonConstantResourceId")
     public void onButtonClick(View view) {
-        Intent intent;
+        Class<?>[] activityClasses = {
+                EStandardActivity.class,
+                DDropActivity.class,
+                DADGADActivity.class,
+                OpenEActivity.class,
+                BassTuningActivity.class,
+                UkuleleTuningActivity.class
+        };
+        int[] buttonIds = {
+                R.id.button1,
+                R.id.button2,
+                R.id.button3,
+                R.id.button4,
+                R.id.button5,
+                R.id.button6
+        };
         int viewId = view.getId();
-
-        if (viewId == R.id.button1) {
-            intent = new Intent(this, EStandardActivity.class);
-        } else if (viewId == R.id.button2) {
-            intent = new Intent(this, DDropActivity.class);
-        } else if (viewId == R.id.button3) {
-            intent = new Intent(this, DADGADActivity.class);
-        } else if (viewId == R.id.button4) {
-            intent = new Intent(this, OpenEActivity.class);
-        } else if (viewId == R.id.button5) {
-            intent = new Intent(this, BassTuningActivity.class);
-        } else if (viewId == R.id.button6) {
-            intent = new Intent(this, UkuleleTuningActivity.class);
-        } else {
-            return;
+        for (int i = 0; i < buttonIds.length; i++) {
+            if (viewId == buttonIds[i]) {
+                startActivity(new Intent(this, activityClasses[i]));
+                return;
+            }
         }
-        startActivity(intent);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
     }
 }
