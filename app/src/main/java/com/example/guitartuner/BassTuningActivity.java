@@ -151,7 +151,7 @@ public class BassTuningActivity extends AppCompatActivity {
         mChart.getXAxis().setDrawLabels(false);
         mChart.getAxisLeft().setDrawLabels(false);
         mChart.setTouchEnabled(false);
-        mChart.setExtraOffsets(60, 90, 1, 450);
+        mChart.setExtraOffsets(60, 90, 1, 500);
     }
     private void addEntry(float pitchInHz) {
         entries.add(new Entry(dataCounter++, pitchInHz));

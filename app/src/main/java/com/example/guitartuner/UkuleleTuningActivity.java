@@ -141,7 +141,7 @@ public class UkuleleTuningActivity extends AppCompatActivity {
         mChart.getDescription().setEnabled(false);
         mChart.setDrawGridBackground(false);
         mChart.getAxisLeft().setDrawGridLines(false);
-        mChart.getAxisLeft().setAxisMinimum(300);
+        mChart.getAxisLeft().setAxisMinimum(200);
         mChart.getAxisLeft().setAxisMaximum(500);
         mChart.getAxisRight().setEnabled(false);
         mChart.getXAxis().setDrawAxisLine(true);
@@ -151,7 +151,7 @@ public class UkuleleTuningActivity extends AppCompatActivity {
         mChart.getXAxis().setDrawLabels(false);
         mChart.getAxisLeft().setDrawLabels(false);
         mChart.setTouchEnabled(false);
-        mChart.setExtraOffsets(60, 90, 1, 450);
+        mChart.setExtraOffsets(60, 90, 1, 500);
     }
     private void addEntry(float pitchInHz) {
         entries.add(new Entry(dataCounter++, pitchInHz));
