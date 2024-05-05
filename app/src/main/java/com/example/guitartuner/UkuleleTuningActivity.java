@@ -5,10 +5,13 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
@@ -24,7 +27,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 
 import be.tarsos.dsp.AudioDispatcher;
 import be.tarsos.dsp.AudioProcessor;
@@ -36,12 +47,14 @@ import be.tarsos.dsp.pitch.PitchProcessor;
 
 public class UkuleleTuningActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 1;
-
     private TextView pitchTextView, pitchTextView1, pitchTextView2;
-
     private AudioRecord audioRecord;
     private TarsosDSPAudioFormat audioFormat;
-
+    private LineChart mChart;
+    private ArrayList<Entry> entries;
+    private Runnable chartUpdater;
+    private Handler mHandler;
+    private int dataCounter;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +73,35 @@ public class UkuleleTuningActivity extends AppCompatActivity {
         RadioGroup tuningRadioGroup = findViewById(R.id.tuningRadioGroup);
         tuningRadioGroup.setOnCheckedChangeListener((group, checkedId) -> handleSelectedTuningOption(checkedId));
 
+        mChart = findViewById(R.id.chart);
+        setupChart();
+
+        entries = new ArrayList<>();
+        mHandler = new Handler(Looper.getMainLooper());
+        dataCounter = 0;
+        chartUpdater = new Runnable() {
+            @Override
+            public void run() {
+                if (!entries.isEmpty()) {
+                    entries.remove(0);
+                    for (int i = 0; i < entries.size(); i++) {
+                        entries.get(i).setX(i);
+                    }
+                    LineDataSet dataSet = new LineDataSet(entries, "Frequency");
+                    dataSet.setColor(Color.GREEN);
+                    dataSet.setDrawCircles(false);
+                    dataSet.setDrawValues(false);
+                    LineData lineData = new LineData(dataSet);
+                    mChart.setData(lineData);
+                    mChart.moveViewToX(dataCounter);
+                    mChart.setVisibleXRangeMaximum(100);
+                    mChart.invalidate();
+                }
+                mHandler.postDelayed(this, 50);
+            }
+        };
+        mHandler.postDelayed(chartUpdater, 100);
+
         if (checkPermissions()) {
             setupAudioRecorder();
             startPitchDetection();
@@ -77,7 +119,6 @@ public class UkuleleTuningActivity extends AppCompatActivity {
         }
         return true;
     }
-
     private void setupAudioRecorder() {
         int sampleRate = 44100;
         int bufferSize = AudioRecord.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
@@ -91,13 +132,30 @@ public class UkuleleTuningActivity extends AppCompatActivity {
                 sampleRate,
                 ByteOrder.BIG_ENDIAN.equals(ByteOrder.nativeOrder())
         );
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, sampleRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, bufferSize);
     }
-
+    private void setupChart() {
+        mChart.getDescription().setEnabled(false);
+        mChart.setDrawGridBackground(false);
+        mChart.getAxisLeft().setDrawGridLines(false);
+        mChart.getAxisLeft().setAxisMinimum(300);
+        mChart.getAxisLeft().setAxisMaximum(500);
+        mChart.getAxisRight().setEnabled(false);
+        mChart.getXAxis().setDrawAxisLine(true);
+        mChart.getXAxis().setDrawGridLines(false);
+        mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        mChart.getLegend().setEnabled(false);
+        mChart.getXAxis().setDrawLabels(false);
+        mChart.getAxisLeft().setDrawLabels(false);
+        mChart.setTouchEnabled(false);
+        mChart.setExtraOffsets(60, 90, 1, 450);
+    }
+    private void addEntry(float pitchInHz) {
+        entries.add(new Entry(dataCounter++, pitchInHz));
+    }
     private void startPitchDetection() {
         if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
             audioRecord.startRecording();
@@ -113,15 +171,16 @@ public class UkuleleTuningActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void handlePitch(PitchDetectionResult res) {
         final float pitchInHz = res.getPitch();
-        runOnUiThread(() -> pitchTextView.setText("Pitch: " + pitchInHz));
-
+        runOnUiThread(() -> {
+            pitchTextView.setText("Pitch: " + pitchInHz);
+            addEntry(pitchInHz);
+        });
         RadioButton[] radioButtons = {
                 findViewById(R.id.radiobutton1),
                 findViewById(R.id.radiobutton2),
                 findViewById(R.id.radiobutton3),
-                findViewById(R.id.radiobutton4)
+                findViewById(R.id.radiobutton4),
         };
-
         for (int i = 0; i < radioButtons.length; i++) {
             RadioButton radioButton = radioButtons[i];
             if (radioButton.isChecked()) {
@@ -130,7 +189,6 @@ public class UkuleleTuningActivity extends AppCompatActivity {
             }
         }
     }
-
     @SuppressLint("SetTextI18n")
     private void handleRadioButton(int index, float pitchInHz) {
         int[] lowerBounds = {439, 329, 261, 391};
@@ -147,29 +205,51 @@ public class UkuleleTuningActivity extends AppCompatActivity {
     @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
     private void handleSelectedTuningOption(int checkedId) {
         String[] soundNames = {"A", "E", "C", "G"};
+        float[] frequencies = {440, 330, 262, 392};
+
+        mChart.getAxisLeft().removeAllLimitLines();
+
+        int index = -1;
         if (checkedId == R.id.radiobutton1) {
-            pitchTextView2.setText(soundNames[0]);
+            index = 0;
         } else if (checkedId == R.id.radiobutton2) {
-            pitchTextView2.setText(soundNames[1]);
+            index = 1;
         } else if (checkedId == R.id.radiobutton3) {
-            pitchTextView2.setText(soundNames[2]);
+            index = 2;
         } else if (checkedId == R.id.radiobutton4) {
-            pitchTextView2.setText(soundNames[3]);
+            index = 3;
+        }
+        if (index != -1) {
+            pitchTextView2.setText(soundNames[index]);
+            LimitLine[] existingLimitLines = mChart.getAxisLeft().getLimitLines().toArray(new LimitLine[0]);
+            boolean limitLineExists = false;
+            for (LimitLine limitLine : existingLimitLines) {
+                if (limitLine.getLabel().equals(String.valueOf((int) frequencies[index]))) {
+                    limitLineExists = true;
+                    break;
+                }
+            }
+            if (!limitLineExists) {
+                LimitLine limitLine = new LimitLine(frequencies[index], String.valueOf((int) frequencies[index]));
+                limitLine.setLineColor(Color.RED);
+                limitLine.setLineWidth(1f);
+                limitLine.setTextColor(Color.WHITE);
+                limitLine.setTextSize(12f);
+                mChart.getAxisLeft().addLimitLine(limitLine);
+            }
         }
     }
-
     private boolean isInRange(float value, int lowerBound, int upperBound) {
         return value > lowerBound && value < upperBound;
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mHandler.removeCallbacks(chartUpdater);
         if (audioRecord != null) {
             audioRecord.release();
         }
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

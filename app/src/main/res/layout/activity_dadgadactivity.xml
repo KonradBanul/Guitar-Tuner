@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".DADGADActivity">
 
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:padding="10dp"
+        tools:ignore="MissingConstraints" />
+
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
