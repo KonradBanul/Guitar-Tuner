@@ -96,10 +96,10 @@ public class EStandardActivity extends AppCompatActivity {
                     mChart.setVisibleXRangeMaximum(100);
                     mChart.invalidate();
                 }
-                mHandler.postDelayed(this, 200);
+                mHandler.postDelayed(this, 50);
             }
         };
-        mHandler.postDelayed(chartUpdater, 200);
+        mHandler.postDelayed(chartUpdater, 50);
 
         if (checkPermissions()) {
             setupAudioRecorder();
