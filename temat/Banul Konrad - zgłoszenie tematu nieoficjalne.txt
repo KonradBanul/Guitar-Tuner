@@ -1,0 +1,11 @@
+nazwisko dyplomanta/tki: Banul
+imię/imiona: Konrad
+kierunek: informatyka
+studia (nie)stacjonarne: stacjonarne
+specjalność: informatyka ogólna
+stopień studiów: inż.
+tytuł po polsku: Aplikacja - Tuner gitarowy
+tutuł po angielsku: Guitar tuner app
+opis krótki (co mniej więcej ma tu być i w jakim środowisku, kilka zdań) : Aplikacja mobilna na androida pisana w javie. Program będzie rysował falę dźwięku oscylującą wokół żądanej częstotliwości w czasie
+rzeczywistym. Użytkownik będzie mógł wybrać strój gitary a następnie dźwięk spośród podanych i przy
+pomocy mikrofonu nastroić instrument.

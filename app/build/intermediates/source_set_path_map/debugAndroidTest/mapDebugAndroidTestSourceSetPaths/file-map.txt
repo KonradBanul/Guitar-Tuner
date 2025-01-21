@@ -1,0 +1,6 @@
+com.example.guitartuner.test.app-annotation-experimental-1.3.0-0 C:\Users\brzoz\.gradle\caches\transforms-3\3355fcea14b1ffa5f072819d714c1de4\transformed\annotation-experimental-1.3.0\res
+com.example.guitartuner.test.app-core-1.5.0-1 C:\Users\brzoz\.gradle\caches\transforms-3\59022da12c2878cc2564e0c0247f678b\transformed\core-1.5.0\res
+com.example.guitartuner.test.app-androidTest-2 C:\Users\brzoz\Desktop\Programy\praca_inz\app\build\generated\res\resValues\androidTest\debug
+com.example.guitartuner.test.app-mergeDebugAndroidTestResources-3 C:\Users\brzoz\Desktop\Programy\praca_inz\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+com.example.guitartuner.test.app-mergeDebugAndroidTestResources-4 C:\Users\brzoz\Desktop\Programy\praca_inz\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+com.example.guitartuner.test.app-debugAndroidTest-5 C:\Users\brzoz\Desktop\Programy\praca_inz\app\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources

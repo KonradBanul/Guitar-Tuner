@@ -1,0 +1,3 @@
+com.example.guitartuner.test
+style WhiteBackgroundDialogTheme
+style WhiteBackgroundTheme
